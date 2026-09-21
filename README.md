@@ -1,5 +1,7 @@
 # Role Profiles — a self-reflection exercise
 
+**Try it live: <https://role-profiles.netlify.app/>**
+
 A small, calm React app for a self-reflection exercise: review a list of
 "roles" and sort them into four categories based on how each relates to your
 sense of self. A role can live in more than one category at once, and you can
