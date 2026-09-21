@@ -1,0 +1,669 @@
+:root {
+  --bg: #f6f4ef;
+  --bg-panel: #fffdfa;
+  --ink: #2f2b26;
+  --ink-soft: #6b645b;
+  --ink-faint: #9c9488;
+  --line: #e7e1d7;
+  --line-strong: #d9d1c4;
+  --accent: #7a8b6f;
+  --accent-soft: #eef1e9;
+  --accent-ink: #4c5a42;
+  --shadow: 0 1px 2px rgba(47, 43, 38, 0.04),
+    0 8px 24px rgba(47, 43, 38, 0.06);
+  --radius: 16px;
+  --radius-sm: 999px;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+.app {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(20px, 4vw, 48px);
+}
+
+/* ---------- Intro ---------- */
+.app__intro {
+  margin-bottom: clamp(24px, 4vw, 40px);
+}
+
+/* Full width so the header panel matches the content grid below it. */
+.app__intro-inner {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(22px, 3.5vw, 36px);
+  box-shadow: var(--shadow);
+}
+
+/* Top row of the header: eyebrow text left, action buttons right. */
+.app__intro-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.app__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent-ink);
+}
+
+.app__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.app__title {
+  margin: 0 0 14px;
+  font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.app__instruction {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  max-width: 68ch;
+}
+
+/* ---------- Toolbar (removed: buttons now live in the header) ---------- */
+
+/* ---------- Layout ---------- */
+.app__main {
+  display: grid;
+  grid-template-columns: minmax(260px, 320px) 1fr;
+  gap: clamp(18px, 2.5vw, 28px);
+  align-items: start;
+}
+
+@media (max-width: 900px) {
+  .app__main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Role bank ---------- */
+.bank {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  position: sticky;
+  top: 20px;
+}
+
+@media (max-width: 900px) {
+  .bank {
+    position: static;
+  }
+}
+
+.bank__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.bank__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.bank__hint {
+  margin: 0 0 16px;
+  font-size: 0.82rem;
+  color: var(--ink-faint);
+}
+
+.bank__chips {
+  max-height: min(60vh, 620px);
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* ---------- Board / columns ---------- */
+.board {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(16px, 2vw, 22px);
+}
+
+@media (max-width: 1180px) and (min-width: 901px) {
+  .board {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 620px) {
+  .board {
+    grid-template-columns: 1fr;
+  }
+}
+
+.column {
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease,
+    background 0.18s ease, transform 0.18s ease;
+}
+
+.column--over {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 3px rgba(122, 139, 111, 0.18), var(--shadow);
+}
+
+.column__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.column__title {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.column__count {
+  flex: none;
+  min-width: 26px;
+  height: 26px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.column__body {
+  flex: 1;
+}
+
+.column__empty {
+  margin: 0;
+  color: var(--ink-faint);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 14px 4px;
+}
+
+/* ---------- Chips ---------- */
+.chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  line-height: 1;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--ink);
+}
+
+.chip__label {
+  white-space: nowrap;
+}
+
+.chip--bank {
+  cursor: grab;
+  transition: transform 0.12s ease, box-shadow 0.12s ease,
+    border-color 0.12s ease, background 0.12s ease;
+  touch-action: none;
+  user-select: none;
+}
+
+.chip--bank:hover {
+  border-color: var(--accent);
+  box-shadow: 0 2px 6px rgba(47, 43, 38, 0.08);
+  transform: translateY(-1px);
+}
+
+.chip--bank:active {
+  cursor: grabbing;
+}
+
+.chip--bank.chip--placed {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent-ink);
+}
+
+.chip--dragging {
+  opacity: 0.35;
+}
+
+.chip__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+
+.chip--placed-in-cat {
+  background: var(--accent-soft);
+  border-color: transparent;
+  color: var(--accent-ink);
+  padding-right: 6px;
+}
+
+.chip__remove {
+  border: none;
+  background: transparent;
+  color: var(--accent-ink);
+  cursor: pointer;
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0 2px;
+  border-radius: var(--radius-sm);
+  opacity: 0.6;
+  transition: opacity 0.12s ease, background 0.12s ease;
+}
+
+.chip__remove:hover {
+  opacity: 1;
+  background: rgba(76, 90, 66, 0.14);
+}
+
+.chip--overlay {
+  cursor: grabbing;
+  border-color: var(--accent);
+  box-shadow: 0 10px 24px rgba(47, 43, 38, 0.18);
+  transform: scale(1.04);
+  background: #fff;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  font: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  padding: 7px 14px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--ink-soft);
+  transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+
+/* Compact icon-only action buttons (header) with CSS tooltips. */
+.btn--icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  color: var(--ink-soft);
+  transition: color 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+
+.btn--icon:hover {
+  color: var(--accent-ink);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.btn--icon:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.btn--icon svg {
+  display: block;
+}
+
+/* Tooltip via ::after; full button name lives in data-tooltip. */
+.btn--icon::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(3px);
+  background: var(--ink);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  white-space: nowrap;
+  padding: 4px 9px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 20;
+}
+
+.btn--icon:hover::after,
+.btn--icon:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Keep the last button's tooltip from spilling past the right edge. */
+.btn--icon:last-child::after {
+  left: auto;
+  right: 0;
+  transform: translateY(3px);
+}
+
+.btn--icon:last-child:hover::after,
+.btn--icon:last-child:focus-visible::after {
+  transform: translateY(0);
+}
+
+.btn--ghost:hover {
+  color: #a6483f;
+  border-color: #e2b6b1;
+  background: #fdf4f3;
+}
+
+/* Scrollbar polish */
+.bank__chips::-webkit-scrollbar {
+  width: 8px;
+}
+.bank__chips::-webkit-scrollbar-thumb {
+  background: var(--line-strong);
+  border-radius: 999px;
+}
+
+/* ---------- Notes (open rich text fields) ---------- */
+.notes {
+  margin-top: clamp(24px, 4vw, 40px);
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(20px, 3vw, 32px);
+  box-shadow: var(--shadow);
+}
+
+.notes__title {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.notes__hint {
+  margin: 0 0 20px;
+  font-size: 0.85rem;
+  color: var(--ink-faint);
+}
+
+/* Stacked vertically so every field is the same (full) width. */
+.notes__fields {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.5vw, 26px);
+}
+
+/* ---------- Rich text editor ---------- */
+.rte {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rte__label {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+.rte__frame {
+  border: 1px solid var(--line-strong);
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.rte__frame:focus-within {
+  border-color: var(--accent);
+}
+
+.rte__toolbar {
+  display: flex;
+  gap: 4px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg);
+}
+
+.rte__btn {
+  font: inherit;
+  cursor: pointer;
+  min-width: 30px;
+  height: 28px;
+  padding: 0 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-soft);
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.rte__btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent-ink);
+}
+
+.rte__btn--active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.rte__editor {
+  display: block;
+}
+
+.rte__content {
+  min-height: 110px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--ink);
+  outline: none;
+  overflow-y: auto;
+  max-height: 320px;
+}
+
+.rte__content p {
+  margin: 0 0 0.5em;
+}
+
+.rte__content p:last-child {
+  margin-bottom: 0;
+}
+
+.rte__content ul,
+.rte__content ol {
+  margin: 0.25em 0;
+  padding-left: 1.4em;
+}
+
+.rte__content h1,
+.rte__content h2,
+.rte__content h3 {
+  margin: 0.4em 0 0.3em;
+  font-size: 1.05em;
+}
+
+.rte__content > :first-child {
+  margin-top: 0;
+}
+
+.rte__hint {
+  margin: 6px 0 0;
+  font-size: 0.75rem;
+  color: var(--ink-faint);
+}
+
+/* ---------- Print view ---------- */
+.print-view {
+  display: none;
+}
+
+.print-view__title {
+  margin: 0 0 12px;
+  font-size: 20pt;
+}
+
+.print-view__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.print-view__col {
+  border: 1px solid #999;
+  border-radius: 6px;
+  padding: 10px 12px;
+  break-inside: avoid;
+}
+
+.print-view__col-title {
+  margin: 0 0 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #bbb;
+  font-size: 11pt;
+  line-height: 1.25;
+}
+
+.print-view__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.print-view__list li {
+  padding: 3px 0;
+  border-bottom: 1px dotted #ccc;
+  font-size: 10.5pt;
+  line-height: 1.3;
+}
+
+.print-view__list li:last-child {
+  border-bottom: none;
+}
+
+.print-view__empty {
+  margin: 0;
+  color: #777;
+  font-size: 10pt;
+}
+
+.print-view__notes {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid #999;
+  break-inside: avoid;
+}
+
+.print-view__note {
+  margin-bottom: 12px;
+}
+
+.print-view__note-title {
+  margin: 0 0 4px;
+  font-size: 11pt;
+}
+
+.print-view__note-body {
+  font-size: 10.5pt;
+  line-height: 1.45;
+}
+
+.print-view__note-body p {
+  margin: 0 0 0.4em;
+}
+
+@page {
+  size: A4 landscape;
+  margin: 12mm;
+}
+
+@media print {
+  body {
+    background: #fff;
+  }
+
+  .app {
+    display: none;
+  }
+
+  .print-view {
+    display: block;
+  }
+}
