@@ -1,5 +1,5 @@
 :root {
-  --bg: #f6f4ef;
+  --bg: #f2f4ef;
   --bg-panel: #fffdfa;
   --ink: #2f2b26;
   --ink-soft: #6b645b;
@@ -78,11 +78,19 @@ body {
 }
 
 .app__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0 0 14px;
   font-size: clamp(1.7rem, 3.5vw, 2.4rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
+}
+
+.app__title-icon {
+  flex: none;
+  color: var(--accent-ink);
 }
 
 .app__instruction {
@@ -92,7 +100,37 @@ body {
   max-width: 68ch;
 }
 
-/* ---------- Toolbar (removed: buttons now live in the header) ---------- */
+/* ---------- Privacy notice ---------- */
+.privacy {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 14px 20px;
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.privacy__content {
+  flex: 1 1 40ch;
+}
+
+.privacy__title {
+  margin: 0 0 6px;
+  color: var(--accent-ink);
+  font-size: 0.95rem;
+}
+
+.privacy__text {
+  margin: 0;
+  max-width: 68ch;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.privacy__clear {
+  flex: none;
+}
 
 /* ---------- Layout ---------- */
 .app__main {
@@ -492,10 +530,23 @@ body {
 
 .rte__toolbar {
   display: flex;
-  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
   padding: 6px 8px;
   border-bottom: 1px solid var(--line);
   background: var(--bg);
+}
+
+.rte__toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rte__toolbar-group + .rte__toolbar-group {
+  padding-left: 6px;
+  border-left: 1px solid var(--line-strong);
 }
 
 .rte__btn {
@@ -514,9 +565,19 @@ body {
   transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
 }
 
-.rte__btn:hover {
+.rte__btn:hover:not(:disabled) {
   background: var(--accent-soft);
   color: var(--accent-ink);
+}
+
+.rte__btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.rte__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .rte__btn--active {
@@ -556,8 +617,27 @@ body {
 .rte__content h1,
 .rte__content h2,
 .rte__content h3 {
-  margin: 0.4em 0 0.3em;
-  font-size: 1.05em;
+  margin: 0.65em 0 0.35em;
+  line-height: 1.25;
+}
+
+.rte__content h1 {
+  font-size: 1.45em;
+}
+
+.rte__content h2 {
+  font-size: 1.25em;
+}
+
+.rte__content h3 {
+  font-size: 1.1em;
+}
+
+.rte__content blockquote {
+  margin: 0.6em 0;
+  padding-left: 0.9em;
+  border-left: 3px solid var(--accent);
+  color: var(--ink-soft);
 }
 
 .rte__content > :first-child {

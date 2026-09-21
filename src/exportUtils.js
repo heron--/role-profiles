@@ -7,6 +7,11 @@ const turndown = new TurndownService({
   bulletListMarker: '-',
 })
 
+turndown.addRule('strikethrough', {
+  filter: ['del', 's', 'strike'],
+  replacement: (content) => `~~${content}~~`,
+})
+
 // TipTap emits `<p></p>` for an untouched field; treat that as empty.
 function isEmptyHtml(html) {
   if (!html) return true
