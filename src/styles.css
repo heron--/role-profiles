@@ -388,14 +388,6 @@ body {
   display: block;
 }
 
-.btn--icon-label {
-  width: auto;
-  gap: 6px;
-  padding: 0 10px;
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
 /* Tooltip via ::after; full button name lives in data-tooltip. */
 .btn--icon::after {
   content: attr(data-tooltip);

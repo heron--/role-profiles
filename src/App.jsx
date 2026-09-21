@@ -11,7 +11,7 @@ import {
   useDroppable,
 } from '@dnd-kit/core'
 import RichTextField from './RichTextField.jsx'
-import { ClipboardCopy, Check, Drama, FileDown, FileJson, FileUp, Printer } from 'lucide-react'
+import { Check, Copy, Drama, FileDown, FileJson, Import, Printer } from 'lucide-react'
 import {
   CATEGORIES,
   ROLES,
@@ -292,13 +292,12 @@ export default function App() {
               >
                 <button
                   type="button"
-                  className="btn--icon btn--icon-label"
+                  className="btn--icon"
                   data-tooltip="Import a saved JSON file"
                   aria-label="Import a saved JSON file"
                   onClick={handleImportClick}
                 >
-                  <FileUp size={16} aria-hidden="true" />
-                  <span>Import</span>
+                  <Import size={16} aria-hidden="true" />
                 </button>
                 <button
                   type="button"
@@ -307,7 +306,7 @@ export default function App() {
                   aria-label={copied ? 'Copied as Markdown' : 'Copy content as Markdown'}
                   onClick={handleCopyMarkdown}
                 >
-                  {copied ? <Check size={16} aria-hidden="true" /> : <ClipboardCopy size={16} aria-hidden="true" />}
+                  {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
                 </button>
                 <button
                   type="button"
