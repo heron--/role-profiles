@@ -65,6 +65,18 @@ afterEach(async () => {
   vi.unstubAllGlobals()
 })
 
+describe('header source link', () => {
+  it('links to the source repository in a separate tab', async () => {
+    await renderApp()
+    const link = container.querySelector('.app__intro a')
+    expect(link.textContent.trim()).toBe('View the source on GitHub')
+    expect(link.getAttribute('href')).toBe('https://github.com/heron--/role-profiles')
+    expect(link.getAttribute('target')).toBe('_blank')
+    expect(link.relList.contains('noopener')).toBe(true)
+    expect(link.relList.contains('noreferrer')).toBe(true)
+  })
+})
+
 describe('privacy and local data', () => {
   it('shows the privacy notice and clear action in the header', async () => {
     await renderApp()

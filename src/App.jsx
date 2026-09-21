@@ -381,6 +381,11 @@ export default function App() {
               <span>Role Profiles</span>
             </h1>
             <p className="app__instruction">{INTRO_TEXT}</p>
+            <p className="app__source">
+              <a href="https://github.com/heron--/role-profiles" target="_blank" rel="noopener noreferrer">
+                View the source on GitHub
+              </a>
+            </p>
             <section className="privacy" aria-labelledby="privacy-title">
               <div className="privacy__content">
                 <h2 id="privacy-title" className="privacy__title">
