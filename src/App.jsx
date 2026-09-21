@@ -11,7 +11,7 @@ import {
   useDroppable,
 } from '@dnd-kit/core'
 import RichTextField from './RichTextField.jsx'
-import { Check, Copy, Drama, FileDown, FileJson, Import, Printer } from 'lucide-react'
+import { Check, Copy, Drama, FileDown, FileJson, FileUp, Printer } from 'lucide-react'
 import {
   CATEGORIES,
   ROLES,
@@ -148,13 +148,23 @@ export default function App() {
   const [activeRole, setActiveRole] = useState(null)
   const [notes, setNotes] = useState(loadNotes)
   const [copied, setCopied] = useState(false)
+  const [editorVersion, setEditorVersion] = useState(0)
+  const importVersion = useRef(0)
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    if (Object.values(state).some((roles) => roles.length > 0)) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
+    } else {
+      localStorage.removeItem(STORAGE_KEY)
+    }
   }, [state])
 
   useEffect(() => {
-    localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes))
+    if (Object.values(notes).some(Boolean)) {
+      localStorage.setItem(NOTES_STORAGE_KEY, JSON.stringify(notes))
+    } else {
+      localStorage.removeItem(NOTES_STORAGE_KEY)
+    }
   }, [notes])
 
   // Stable identity so each editor's onUpdate closure never goes stale.
@@ -207,16 +217,34 @@ export default function App() {
     }))
   }
 
+  function resetResponses() {
+    importVersion.current += 1
+    setState(emptyState())
+    setNotes(emptyNotes())
+    setActiveRole(null)
+    setCopied(false)
+    setEditorVersion((version) => version + 1)
+  }
+
   function handleReset() {
     if (
-      totalPlaced === 0 ||
       window.confirm(
         'Clear every category and all notes and start over? This cannot be undone.',
       )
     ) {
-      setState(emptyState())
-      setNotes(emptyNotes())
+      resetResponses()
     }
+  }
+
+  function handleClearLocalData() {
+    if (!window.confirm(
+      'Clear all roles and notes saved in this browser? This cannot be undone. ' +
+      'Downloaded files, printed copies, and clipboard contents will not be removed.',
+    )) return
+
+    localStorage.removeItem(STORAGE_KEY)
+    localStorage.removeItem(NOTES_STORAGE_KEY)
+    resetResponses()
   }
 
   async function handleCopyMarkdown() {
@@ -252,7 +280,9 @@ export default function App() {
     const file = event.target.files?.[0]
     event.target.value = '' // allow re-importing the same file
     if (!file) return
+    const version = ++importVersion.current
     file.text().then((text) => {
+      if (version !== importVersion.current) return
       if (
         hasAnyData &&
         !window.confirm(
@@ -297,13 +327,13 @@ export default function App() {
                   aria-label="Import a saved JSON file"
                   onClick={handleImportClick}
                 >
-                  <Import size={16} aria-hidden="true" />
+                  <FileUp size={16} aria-hidden="true" />
                 </button>
                 <button
                   type="button"
                   className="btn--icon"
-                  data-tooltip={copied ? 'Copied as Markdown' : 'Copy content as Markdown'}
-                  aria-label={copied ? 'Copied as Markdown' : 'Copy content as Markdown'}
+                  data-tooltip={copied ? 'Copied as Markdown' : 'Copy roles and notes as Markdown'}
+                  aria-label={copied ? 'Copied as Markdown' : 'Copy roles and notes as Markdown'}
                   onClick={handleCopyMarkdown}
                 >
                   {copied ? <Check size={16} aria-hidden="true" /> : <Copy size={16} aria-hidden="true" />}
@@ -311,8 +341,8 @@ export default function App() {
                 <button
                   type="button"
                   className="btn--icon"
-                  data-tooltip="Download content as Markdown"
-                  aria-label="Download content as Markdown"
+                  data-tooltip="Download roles and notes as Markdown"
+                  aria-label="Download roles and notes as Markdown"
                   onClick={handleDownloadMarkdown}
                 >
                   <FileDown size={16} aria-hidden="true" />
@@ -320,8 +350,8 @@ export default function App() {
                 <button
                   type="button"
                   className="btn--icon"
-                  data-tooltip="Download content as JSON"
-                  aria-label="Download content as JSON"
+                  data-tooltip="Download roles and notes as JSON"
+                  aria-label="Download roles and notes as JSON"
                   onClick={handleDownloadJson}
                 >
                   <FileJson size={16} aria-hidden="true" />
@@ -329,8 +359,8 @@ export default function App() {
                 <button
                   type="button"
                   className="btn--icon"
-                  data-tooltip="Print (4 columns)"
-                  aria-label="Print"
+                  data-tooltip="Print roles and notes"
+                  aria-label="Print roles and notes"
                   onClick={() => window.print()}
                 >
                   <Printer size={16} aria-hidden="true" />
@@ -351,6 +381,26 @@ export default function App() {
               <span>Role Profiles</span>
             </h1>
             <p className="app__instruction">{INTRO_TEXT}</p>
+            <section className="privacy" aria-labelledby="privacy-title">
+              <div className="privacy__content">
+                <h2 id="privacy-title" className="privacy__title">
+                  Your responses stay on this device
+                </h2>
+                <p className="privacy__text">
+                  Your roles and notes are saved only in this browser on this
+                  device. This app never uploads or shares your responses. Other
+                  people using the same browser on this device may be able to see
+                  them. Clear your local data when you finish on a shared device.
+                </p>
+              </div>
+              <button
+                type="button"
+                className="btn btn--ghost privacy__clear"
+                onClick={handleClearLocalData}
+              >
+                Clear local data
+              </button>
+            </section>
           </div>
         </header>
 
@@ -358,13 +408,18 @@ export default function App() {
           <aside className="bank">
             <div className="bank__header">
               <h2 className="bank__title">Role Bank</h2>
-              <button className="btn btn--ghost" onClick={handleReset}>
-                Reset
+              <button
+                className="btn btn--ghost"
+                onClick={handleReset}
+                title="Clear all categories and notes"
+                aria-label="Reset all categories and notes"
+              >
+                Reset all
               </button>
             </div>
             <p className="bank__hint">
-              Drag a role into any category. The same role can live in several
-              categories at once.
+              Drag roles from this list into the categories. Select × next to a
+              role in a category to remove it.
             </p>
             <div className="chip-wrap bank__chips">
               {ROLES.map((role) => (
@@ -389,16 +444,17 @@ export default function App() {
           </div>
         </main>
 
-        <section className="notes" aria-label="Open reflection notes">
+        <section className="notes" aria-label="Reflections">
           <h2 className="notes__title">Reflections</h2>
           <p className="notes__hint">
-            Free-write below. Your notes are saved in this browser and are
-            included when you copy, download, or print.
+            Use the prompts below to reflect on your choices. Your roles and notes
+            are saved automatically in this browser and included when you copy,
+            download, or print.
           </p>
           <div className="notes__fields">
             {NOTE_FIELDS.map((field) => (
               <RichTextField
-                key={field.id}
+                key={`${editorVersion}:${field.id}`}
                 field={field}
                 value={notes[field.id]}
                 onChange={handleNoteChange}

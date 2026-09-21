@@ -21,13 +21,9 @@ export const ROLES = [
 ]
 
 export const INTRO_TEXT =
-  "Review the roles below and consider what each role means to you. When you " +
-  "are ready, place each of the roles into one of the following categories: " +
-  "‘This is Who I Am,’ ‘This is Who I Am Not,’ ‘I Am " +
-  "Not Sure If This is Who I Am,’ and ‘This Is Who I Want to Be.’ " +
-  "You may put a role in more than one category. You may also change this as " +
-  "many times as you see fit. Once you have completed this, look at your lists. " +
-  "Which roles stand out to you the most? Which roles surprised you?"
+  'Review the roles below and consider what each role means to you. ' +
+  'When you are ready, place each role in one or more of the four categories. ' +
+  'You can change your choices at any time.'
 
 export const STORAGE_KEY = 'role-reflection.v1'
 

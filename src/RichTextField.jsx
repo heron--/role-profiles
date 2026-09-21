@@ -5,10 +5,8 @@ import {
   List,
   ListOrdered,
   Quote,
-  Redo2,
   RemoveFormatting,
   Strikethrough,
-  Undo2,
 } from 'lucide-react'
 
 function ToolbarButton({
@@ -55,26 +53,12 @@ export default function RichTextField({ field, value, onChange }) {
   // Normal typing round-trips identically, so this is a no-op then.
   useEffect(() => {
     if (!editor) return
-    const current = editor.getHTML()
-    if ((value || '') !== current) {
-      editor.commands.setContent(value || '', {
-        emitUpdate: false,
-      })
-    }
+    const content = value || ''
+    if (content === editor.getHTML() || (!content && editor.isEmpty)) return
+    editor.commands.setContent(content, {
+      emitUpdate: false,
+    })
   }, [editor, value])
-
-  const handleTextStyle = useCallback(
-    (style) => {
-      if (!editor) return
-      const chain = editor.chain().focus()
-      if (style === 'paragraph') {
-        chain.setParagraph().run()
-        return
-      }
-      chain.setHeading({ level: Number(style) }).run()
-    },
-    [editor],
-  )
 
   const handleBold = useCallback(() => {
     editor?.chain().focus().toggleBold().run()
@@ -104,22 +88,6 @@ export default function RichTextField({ field, value, onChange }) {
     editor?.chain().focus().unsetAllMarks().clearNodes().run()
   }, [editor])
 
-  const handleUndo = useCallback(() => {
-    editor?.chain().focus().undo().run()
-  }, [editor])
-
-  const handleRedo = useCallback(() => {
-    editor?.chain().focus().redo().run()
-  }, [editor])
-
-  const textStyle = editor?.isActive('heading', { level: 1 })
-    ? '1'
-    : editor?.isActive('heading', { level: 2 })
-      ? '2'
-      : editor?.isActive('heading', { level: 3 })
-        ? '3'
-        : 'paragraph'
-
   return (
     <div className="rte">
       <label className="rte__label">{field.title}</label>
@@ -129,41 +97,6 @@ export default function RichTextField({ field, value, onChange }) {
           role="toolbar"
           aria-label={`Text formatting for ${field.title}`}
         >
-          <div className="rte__toolbar-group">
-            <ToolbarButton
-              label="Undo"
-              onClick={handleUndo}
-              disabled={!editor?.can().undo()}
-            >
-              <Undo2 size={16} aria-hidden="true" />
-            </ToolbarButton>
-            <ToolbarButton
-              label="Redo"
-              onClick={handleRedo}
-              disabled={!editor?.can().redo()}
-            >
-              <Redo2 size={16} aria-hidden="true" />
-            </ToolbarButton>
-          </div>
-
-          <div className="rte__toolbar-group">
-            <label className="rte__select-label">
-              <span className="sr-only">Text style</span>
-              <select
-                className="rte__select"
-                value={textStyle}
-                onChange={(event) => handleTextStyle(event.target.value)}
-                disabled={!editor}
-                aria-label="Text style"
-              >
-                <option value="paragraph">Paragraph</option>
-                <option value="1">Heading 1</option>
-                <option value="2">Heading 2</option>
-                <option value="3">Heading 3</option>
-              </select>
-            </label>
-          </div>
-
           <div className="rte__toolbar-group">
             <ToolbarButton
               label="Bold"
@@ -237,7 +170,7 @@ export default function RichTextField({ field, value, onChange }) {
         <EditorContent editor={editor} className="rte__editor" />
       </div>
       <p className="rte__hint">
-        Add headings, lists, quotes, and emphasis with the formatting toolbar.
+        Use the toolbar to format your notes with emphasis, lists, and block quotes.
       </p>
     </div>
   )

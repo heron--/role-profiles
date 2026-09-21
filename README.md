@@ -8,6 +8,16 @@ sense of self. A role can live in more than one category at once, and you can
 rearrange as often as you like. Everything persists to `localStorage`, so
 nothing is lost on refresh.
 
+## Privacy
+
+Responses are saved in the current browser on the current device. The app does
+not upload or share them. Other people with access to the same browser profile
+may be able to see saved responses.
+
+Use **Clear local data** in the header to delete saved roles and notes after
+confirmation. This also clears the current responses and editor undo history.
+It does not delete downloaded files, printed copies, or clipboard contents.
+
 ## Source
 
 This exercise is **Role Profiles**, a drama therapy assessment developed by
@@ -39,11 +49,9 @@ Then open the printed URL (default http://localhost:5173).
 - **Remove** — click the `×` on a placed chip to remove it from that one
   category, leaving it untouched everywhere else.
 - **Counts** — each column header shows how many roles it holds.
-- **Reset** — clears every category back to the starting state (asks to
-  confirm first).
-- **Reflections** — write notes with headings, bold, italic, strikethrough,
-  bulleted or numbered lists, and block quotes. The editor also supports undo,
-  redo, and clearing formatting.
+- **Reset all** — clears every category and all notes after confirmation.
+- **Reflections** — write notes with bold, italic, strikethrough, bulleted or
+  numbered lists, and block quotes. The toolbar also supports clearing formatting.
 - **Persistence** — the full state is saved to `localStorage` on every change
   and restored on load.
 - **Import and export** — import a saved JSON file, or copy, download, and
