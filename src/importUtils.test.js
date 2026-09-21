@@ -63,6 +63,29 @@ describe('parseImport', () => {
     )
   })
 
+  it('round-trips headings, lists, quotes, and strikethrough in notes', () => {
+    const richNotes = {
+      standout:
+        '<h2>Pattern</h2><ul><li>Healer</li><li><strong>Witness</strong></li></ul><blockquote><p>A useful observation.</p></blockquote><p><s>Old thought</s></p>',
+      surprised: '',
+      other: '',
+    }
+
+    const exported = buildJson(sampleState, richNotes)
+    const markdown = JSON.parse(exported).notes.standout
+    const result = parseImport(exported)
+
+    expect(markdown).toContain('## Pattern')
+    expect(markdown).toMatch(/-\s+Healer/)
+    expect(markdown).toContain('> A useful observation.')
+    expect(markdown).toContain('~~Old thought~~')
+    expect(result.ok).toBe(true)
+    expect(result.notes.standout).toContain('<h2>Pattern</h2>')
+    expect(result.notes.standout).toContain('<ul>')
+    expect(result.notes.standout).toContain('<blockquote>')
+    expect(result.notes.standout).toContain('<del>Old thought</del>')
+  })
+
   it('produces a complete state with every category id, even when the file is empty', () => {
     const result = parseImport(
       JSON.stringify({

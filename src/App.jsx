@@ -11,7 +11,7 @@ import {
   useDroppable,
 } from '@dnd-kit/core'
 import RichTextField from './RichTextField.jsx'
-import { ClipboardCopy, Check, FileDown, FileJson, Printer, Upload } from 'lucide-react'
+import { ClipboardCopy, Check, Drama, FileDown, FileJson, FileUp, Printer } from 'lucide-react'
 import {
   CATEGORIES,
   ROLES,
@@ -292,12 +292,13 @@ export default function App() {
               >
                 <button
                   type="button"
-                  className="btn--icon"
-                  data-tooltip="Import from JSON file"
-                  aria-label="Import from JSON file"
+                  className="btn--icon btn--icon-label"
+                  data-tooltip="Import a saved JSON file"
+                  aria-label="Import a saved JSON file"
                   onClick={handleImportClick}
                 >
-                  <Upload size={16} aria-hidden="true" />
+                  <FileUp size={16} aria-hidden="true" />
+                  <span>Import</span>
                 </button>
                 <button
                   type="button"
@@ -346,7 +347,10 @@ export default function App() {
                 tabIndex={-1}
               />
             </div>
-            <h1 className="app__title">Role Profiles</h1>
+            <h1 className="app__title">
+              <Drama className="app__title-icon" size={32} aria-hidden="true" />
+              <span>Role Profiles</span>
+            </h1>
             <p className="app__instruction">{INTRO_TEXT}</p>
           </div>
         </header>

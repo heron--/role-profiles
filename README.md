@@ -41,8 +41,13 @@ Then open the printed URL (default http://localhost:5173).
 - **Counts** — each column header shows how many roles it holds.
 - **Reset** — clears every category back to the starting state (asks to
   confirm first).
+- **Reflections** — write notes with headings, bold, italic, strikethrough,
+  bulleted or numbered lists, and block quotes. The editor also supports undo,
+  redo, and clearing formatting.
 - **Persistence** — the full state is saved to `localStorage` on every change
   and restored on load.
+- **Import and export** — import a saved JSON file, or copy, download, and
+  print the completed reflection.
 
 Drag-and-drop is built with [@dnd-kit](https://dndkit.com/) and works with
 mouse, touch, and keyboard.

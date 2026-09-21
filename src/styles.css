@@ -78,11 +78,19 @@ body {
 }
 
 .app__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin: 0 0 14px;
   font-size: clamp(1.7rem, 3.5vw, 2.4rem);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
+}
+
+.app__title-icon {
+  flex: none;
+  color: var(--accent-ink);
 }
 
 .app__instruction {
@@ -380,6 +388,14 @@ body {
   display: block;
 }
 
+.btn--icon-label {
+  width: auto;
+  gap: 6px;
+  padding: 0 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
 /* Tooltip via ::after; full button name lives in data-tooltip. */
 .btn--icon::after {
   content: attr(data-tooltip);
@@ -492,10 +508,23 @@ body {
 
 .rte__toolbar {
   display: flex;
-  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
   padding: 6px 8px;
   border-bottom: 1px solid var(--line);
   background: var(--bg);
+}
+
+.rte__toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.rte__toolbar-group + .rte__toolbar-group {
+  padding-left: 6px;
+  border-left: 1px solid var(--line-strong);
 }
 
 .rte__btn {
@@ -514,14 +543,49 @@ body {
   transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
 }
 
-.rte__btn:hover {
+.rte__btn:hover:not(:disabled) {
   background: var(--accent-soft);
   color: var(--accent-ink);
+}
+
+.rte__btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.rte__btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .rte__btn--active {
   background: var(--accent);
   color: #fff;
+}
+
+.rte__select {
+  height: 28px;
+  padding: 0 24px 0 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink-soft);
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+
+.rte__select:hover:not(:disabled),
+.rte__select:focus-visible {
+  border-color: var(--accent);
+  background: #fff;
+  color: var(--accent-ink);
+  outline: none;
+}
+
+.rte__select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
 }
 
 .rte__editor {
@@ -556,8 +620,27 @@ body {
 .rte__content h1,
 .rte__content h2,
 .rte__content h3 {
-  margin: 0.4em 0 0.3em;
-  font-size: 1.05em;
+  margin: 0.65em 0 0.35em;
+  line-height: 1.25;
+}
+
+.rte__content h1 {
+  font-size: 1.45em;
+}
+
+.rte__content h2 {
+  font-size: 1.25em;
+}
+
+.rte__content h3 {
+  font-size: 1.1em;
+}
+
+.rte__content blockquote {
+  margin: 0.6em 0;
+  padding-left: 0.9em;
+  border-left: 3px solid var(--accent);
+  color: var(--ink-soft);
 }
 
 .rte__content > :first-child {
@@ -568,6 +651,18 @@ body {
   margin: 6px 0 0;
   font-size: 0.75rem;
   color: var(--ink-faint);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ---------- Print view ---------- */
